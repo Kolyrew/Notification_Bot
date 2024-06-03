@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+	stage('Download git repository') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'rm -rf api_lab2'
+                        sh 'git clone --depth=1 https://github.com/riapush/NotificationBot.git'
+                        sh 'rm -rf api_lab2/.git*'
+                        sh 'ls'
+                    } else {
+                        bat 'powershell Remove-Item NotificationBot -Recurse -Force'
+                        bat 'git clone --depth=1 https://github.com/riapush/NotificationBot.git NotificationBot'
+                        bat 'powershell Remove-Item NotificationBot/.git* -Recurse -Force'
+                    }
+                }
+		echo 'successfully download'
+            }
+        }
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
